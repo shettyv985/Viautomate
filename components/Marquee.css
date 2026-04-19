@@ -1,0 +1,37 @@
+.marquee-section {
+  width: 100vw;
+  overflow: hidden;
+  background: #0a0a0a;
+  padding: 0.4rem 0 1.2rem 0;
+}
+
+.marquee-container {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-track {
+  display: inline-block;
+  animation: marquee-scroll 30s linear infinite;
+}
+
+.marquee-track h1 {
+  display: inline-block;
+  margin-right: 60px;
+  color: #ffffff;
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 700;
+  font-family: "Aeonik Regular", sans-serif;
+}
+
+.marquee-track h1::after {
+  content: " ✦";
+  color: #555;
+  margin-left: 60px;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-100%, 0, 0); }
+}

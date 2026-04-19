@@ -1,0 +1,106 @@
+.team-section {
+  position: relative;
+  width: 100vw;
+  padding: 8em 4em;
+  display: flex;
+  gap: 6em;
+  background-color: transparent;
+}
+
+.team-header-col {
+  flex: 1;
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+  color: #0a0a0a;
+}
+
+.team-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.team-header-col h1 {
+  font-size: clamp(60px, 12vw, 160px);
+  font-weight: 700;
+  line-height: 0.9;
+  color: #0a0a0a;
+  font-family: "Aeonik Regular", sans-serif;
+}
+
+.team-list {
+  flex: 3;
+  display: flex;
+  gap: 3em;
+}
+
+.team-player {
+  flex: 1;
+}
+
+.player-img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #e5e5e5;
+  margin-bottom: 1em;
+}
+
+.player-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.player-info h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0a0a0a;
+  padding: 0.2em 0;
+}
+
+.player-info p {
+  font-size: 13px;
+  color: #888;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.3em 0 0.8em 0;
+}
+
+.player-desc p {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 1.2em;
+}
+
+.player-social a {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0a0a0a;
+  text-decoration: none;
+  border-bottom: 1px solid #0a0a0a;
+  padding-bottom: 2px;
+}
+
+@media (max-width: 900px) {
+  .team-section {
+    flex-direction: column;
+    padding: 4em 1.5em;
+    gap: 3em;
+  }
+  .team-header-col {
+    position: relative;
+    top: 0;
+  }
+  .team-list {
+    flex-direction: column;
+  }
+}
