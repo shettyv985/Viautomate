@@ -7,11 +7,14 @@
 @media (max-width: 768px) {
   .pill-nav-container {
     width: 100%;
+    height: var(--floating-nav-height);
+    display: flex;
+    align-items: center;
   }
 }
 
 .pill-nav {
-  --nav-h: clamp(42px, 5vw, 48px);
+  --nav-h: var(--floating-nav-height, clamp(42px, 5vw, 48px));
   --logo: 36px;
   --pill-pad-x: clamp(14px, 1.7vw, 20px);
   --pill-gap: 3px;
@@ -25,6 +28,8 @@
 @media (max-width: 768px) {
   .pill-nav {
     width: 100%;
+    height: var(--floating-nav-height);
+    align-items: center;
     justify-content: space-between;
     gap: 12px;
   }
@@ -200,6 +205,7 @@
 @media (max-width: 768px) {
   .mobile-menu-button {
     display: flex;
+    align-self: center;
   }
 
   .pill-logo {

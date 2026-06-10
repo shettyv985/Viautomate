@@ -24,7 +24,8 @@ export default function Home() {
 }
 
 function HomeContent() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const isTranslatedHero = language !== "en";
 
   return (
     <main style={{ background: '#ffffff', position: 'relative' }}>
@@ -109,12 +110,32 @@ function HomeContent() {
             box-shadow: 0 0 0 5px rgba(10, 10, 10, 0.08);
           }
           .hero-h1 {
-            font-size: clamp(28px, 5.5vw, 68px);
+            font-size: clamp(30px, 4.3vw, 56px);
             font-weight: 700;
-            line-height: 1.25;
+            line-height: 1.18;
             color: #0a0a0a;
-            max-width: 780px;
+            max-width: min(1120px, calc(100vw - 48px));
             letter-spacing: -1px;
+          }
+          .hero-heading-line {
+            display: block;
+          }
+          .hero-heading-nowrap {
+            white-space: nowrap;
+          }
+          .hero-heading-tail::before {
+            content: " ";
+          }
+          .hero-heading-tail-mobile-prefix {
+            display: none;
+          }
+          .hero-heading-tail-mobile-prefix::after {
+            content: " ";
+          }
+          .hero-h1-localized {
+            font-size: clamp(26px, 3.45vw, 44px);
+            line-height: 1.2;
+            letter-spacing: -0.6px;
           }
           .hero-tagline {
             position: relative;
@@ -153,18 +174,27 @@ function HomeContent() {
           @media (max-width: 430px) {
             .hero-wrapper { gap: 16px; margin-top: 70px; padding: 0 20px; }
             .hero-label { font-size: 11px; letter-spacing: 2px; padding: 5px 16px; }
-            .hero-h1 { font-size: clamp(32px, 9vw, 42px); line-height: 1.3; letter-spacing: -0.5px; max-width: 100%; }
+            .hero-h1 { font-size: clamp(28px, 8vw, 34px); line-height: 1.22; letter-spacing: -0.4px; max-width: 100%; }
+            .hero-h1-localized { font-size: clamp(24px, 7vw, 29px); line-height: 1.25; }
+            .hero-heading-nowrap { white-space: normal; }
+            .hero-heading-tail-mobile-hide { display: none; }
+            .hero-heading-tail-mobile-prefix { display: inline; }
             .hero-tagline { font-size: 15px; max-width: 100%; line-height: 1.75; }
             .hero-tagline::before { inset: -16px -16px; }
             .hero-cta { padding: 13px 32px; font-size: 15px; }
           }
           @media (min-width: 431px) and (max-width: 768px) {
             .hero-wrapper { gap: 16px; margin-top: 65px; }
-            .hero-h1 { font-size: clamp(28px, 6vw, 44px); max-width: 95%; }
+            .hero-h1 { font-size: clamp(30px, 5.4vw, 40px); line-height: 1.2; max-width: 95%; }
+            .hero-h1-localized { font-size: clamp(26px, 4.7vw, 34px); line-height: 1.24; }
+            .hero-heading-nowrap { white-space: normal; }
+            .hero-heading-tail-mobile-hide { display: none; }
+            .hero-heading-tail-mobile-prefix { display: inline; }
             .hero-tagline { font-size: 14px; max-width: 90%; }
           }
           @media (min-width: 769px) and (max-width: 1024px) {
-            .hero-h1 { font-size: clamp(36px, 5vw, 54px); max-width: 90%; }
+            .hero-h1 { font-size: clamp(34px, 4.4vw, 46px); max-width: min(1120px, calc(100vw - 48px)); }
+            .hero-h1-localized { font-size: clamp(30px, 3.5vw, 38px); line-height: 1.22; }
             .hero-tagline { font-size: 15px; }
           }
           @media (min-width: 1440px) {
@@ -177,30 +207,47 @@ function HomeContent() {
         <div className="hero-wrapper">
           <div className="hero-label">{t.hero.label}</div>
 
-          <h1 className="hero-h1">
-            {t.hero.headingBeforeFocus}{' '}
-            <span style={{ position: 'relative', display: 'inline-block', padding: '0 6px' }}>
-              <svg
-                style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', overflow: 'visible', pointerEvents: 'none' }}
-                width="115%" height="190%" viewBox="0 0 110 58" preserveAspectRatio="none"
-              >
-                <path
-                  d="M 55 4 C 80 2, 104 14, 106 30 C 108 44, 82 54, 55 54 C 28 54, 4 44, 4 30 C 4 14, 30 6, 55 4 Z"
-                  fill="none" stroke="#0a0a0a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                />
-              </svg>
-              {t.hero.focus}
+          <h1 className={`hero-h1${isTranslatedHero ? " hero-h1-localized" : ""}`}>
+            <span className="hero-heading-line">{t.hero.headingIntro}</span>
+            <span className="hero-heading-line hero-heading-nowrap">{t.hero.headingLead}</span>
+            <span className="hero-heading-line">
+              {t.hero.headingBeforeFocus}{' '}
+              <span style={{ position: 'relative', display: 'inline-block', padding: '0 6px', whiteSpace: 'nowrap' }}>
+                <svg
+                  style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', overflow: 'visible', pointerEvents: 'none' }}
+                  width="115%" height="190%" viewBox="0 0 110 58" preserveAspectRatio="none"
+                >
+                  <path
+                    d="M 55 4 C 80 2, 104 14, 106 30 C 108 44, 82 54, 55 54 C 28 54, 4 44, 4 30 C 4 14, 30 6, 55 4 Z"
+                    fill="none" stroke="#0a0a0a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                  />
+                </svg>
+                {t.hero.focus}
+              </span>
+              {t.hero.headingAfterFocus ? (
+                <span
+                  className={`hero-heading-tail${language === "en" ? " hero-heading-tail-mobile-hide" : ""}`}
+                >
+                  {t.hero.headingAfterFocus}
+                </span>
+              ) : null}
             </span>
-            {' '}{t.hero.headingAfterFocus}{' '}
-            <span style={{ fontStyle: 'italic', fontWeight: 400, display: 'inline-block', position: 'relative', paddingBottom: '10px' }}>
-              {t.hero.headingEmphasis}
-              <svg
-                style={{ position: 'absolute', left: '-2px', bottom: '-2px', overflow: 'visible', pointerEvents: 'none' }}
-                width="104%" height="12px" viewBox="0 0 100 12" preserveAspectRatio="none"
-              >
-                <line x1="0" y1="5" x2="100" y2="2" stroke="#e00" strokeWidth="2" strokeLinecap="round" />
-                <line x1="0" y1="10" x2="100" y2="7" stroke="#e00" strokeWidth="2" strokeLinecap="round" />
-              </svg>
+            <span className="hero-heading-line">
+              {language === "en" && t.hero.headingAfterFocus ? (
+                <span className="hero-heading-tail-mobile-prefix">
+                  {t.hero.headingAfterFocus}
+                </span>
+              ) : null}
+              <span style={{ fontStyle: 'italic', fontWeight: 700, display: 'inline-block', position: 'relative', paddingBottom: '10px' }}>
+                {t.hero.headingEmphasis}
+                <svg
+                  style={{ position: 'absolute', left: '-2px', bottom: '-2px', overflow: 'visible', pointerEvents: 'none' }}
+                  width="104%" height="12px" viewBox="0 0 100 12" preserveAspectRatio="none"
+                >
+                  <line x1="0" y1="5" x2="100" y2="2" stroke="#e00" strokeWidth="2" strokeLinecap="round" />
+                  <line x1="0" y1="10" x2="100" y2="7" stroke="#e00" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </span>
             </span>
           </h1>
 

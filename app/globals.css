@@ -57,6 +57,8 @@
 }
 
 :root {
+  --floating-nav-top: clamp(12px, 2vw, 24px);
+  --floating-nav-height: clamp(42px, 5vw, 48px);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -142,7 +144,7 @@ html {
 
 .site-nav-shell {
   position: fixed;
-  top: clamp(12px, 2vw, 24px);
+  top: var(--floating-nav-top);
   left: 0;
   right: 0;
   z-index: 20;
@@ -158,13 +160,15 @@ html {
 
 .language-switcher {
   position: fixed;
-  top: 18px;
-  left: 24px;
+  top: var(--floating-nav-top);
+  left: clamp(12px, 3vw, 32px);
   z-index: 1000;
   display: flex;
   align-items: center;
+  box-sizing: border-box;
   gap: 4px;
   width: max-content;
+  height: var(--floating-nav-height);
   padding: 4px;
   border: 1px solid rgba(10, 10, 10, 0.14);
   border-radius: 999px;
@@ -179,8 +183,9 @@ html {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   min-width: 44px;
-  height: 34px;
+  height: calc(var(--floating-nav-height) - 8px);
   padding: 0 12px;
   border: 0;
   border-radius: 999px;
@@ -199,6 +204,10 @@ html {
     box-shadow 180ms ease;
 }
 
+.language-switcher button[data-language="ru"] {
+  min-width: 52px;
+}
+
 .language-switcher button:hover {
   transform: translateY(-1px);
 }
@@ -215,19 +224,59 @@ html {
 }
 
 @media (max-width: 768px) {
+  :root {
+    --floating-nav-top: 10px;
+    --floating-nav-height: 40px;
+  }
+
   .site-nav-shell {
+    top: var(--floating-nav-top);
+    height: var(--floating-nav-height);
+    align-items: center;
     justify-content: stretch;
     padding: 0 12px;
   }
 
   .language-switcher {
-    top: 72px;
-    left: 12px;
+    top: var(--floating-nav-top);
+    right: 12px;
+    left: auto;
   }
 
   .language-switcher button {
-    min-width: 42px;
-    height: 32px;
+    min-width: 40px;
     font-size: 11px;
+  }
+
+  .language-switcher button[data-language="ru"] {
+    min-width: 48px;
+  }
+}
+
+@media (max-width: 360px) {
+  :root {
+    --floating-nav-top: 10px;
+    --floating-nav-height: 36px;
+  }
+
+  .site-nav-shell {
+    padding: 0 10px;
+  }
+
+  .language-switcher {
+    right: 10px;
+    gap: 2px;
+    padding: 3px;
+  }
+
+  .language-switcher button {
+    min-width: 32px;
+    height: calc(var(--floating-nav-height) - 6px);
+    padding: 0 7px;
+    font-size: 9px;
+  }
+
+  .language-switcher button[data-language="ru"] {
+    min-width: 38px;
   }
 }
