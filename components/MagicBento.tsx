@@ -1,6 +1,7 @@
 'use client';
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { gsap } from 'gsap';
+import { useLanguage } from '@/components/LanguageProvider';
 import './MagicBento.css';
 
 export interface BentoCardProps {
@@ -30,47 +31,6 @@ const DEFAULT_PARTICLE_COUNT = 12;
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
 const DEFAULT_GLOW_COLOR = '132, 0, 255';
 const MOBILE_BREAKPOINT = 768;
-
-const cardData: BentoCardProps[] = [
-  {
-    color: '#0a0a0a',
-    title: 'Workflow Automation',
-    description: 'We eliminate the spreadsheets, manual follow-ups, and repetitive data entry that eat your team\'s time every single day.',
-    label: '01'
-  },
-  {
-    color: '#505a63',
-    title: 'Voice Agents',
-    description: 'Custom AI voice agents that handle calls, answer questions, and qualify leads — so your team focuses on closing.',
-    label: '02'
-  },
-  {
-    color: '#1a1a1a',
-    title: 'Web Development',
-    description: 'Fast, modern websites built to convert — designed to reflect your brand and rank well from day one.',
-    label: '03'
-  },
-  {
-    color: '#1a1a1a',
-    title: 'Web Development',
-    description: 'Fast, modern websites built to convert — designed to reflect your brand and rank well from day one.',
-    label: '04'
-  },
-  {
-    color: '#1a1a1a',
-    title: 'Web Development',
-    description: 'Fast, modern websites built to convert — designed to reflect your brand and rank well from day one.',
-    label: '05'
-  },
-  {
-    color: '#1a1a1a',
-    title: 'Web Development',
-    description: 'Fast, modern websites built to convert — designed to reflect your brand and rank well from day one.',
-    label: '06'
-  },
-];
-
-
 
 const createParticleElement = (x: number, y: number, color: string = DEFAULT_GLOW_COLOR): HTMLDivElement => {
   const el = document.createElement('div');
@@ -528,6 +488,7 @@ const MagicBento: React.FC<BentoProps> = ({
   clickEffect = true,
   enableMagnetism = true
 }) => {
+  const { t } = useLanguage();
   const gridRef = useRef<HTMLDivElement>(null);
   const isMobile = useMobileDetection();
   const shouldDisableAnimations = disableAnimations || isMobile;
@@ -545,7 +506,7 @@ const MagicBento: React.FC<BentoProps> = ({
       )}
 
       <BentoCardGrid gridRef={gridRef}>
-        {cardData.map((card, index) => {
+        {t.bento.cards.map((card, index) => {
           const baseClassName = `magic-bento-card ${textAutoHide ? 'magic-bento-card--text-autohide' : ''} ${enableBorderGlow ? 'magic-bento-card--border-glow' : ''}`;
           const cardProps = {
             className: baseClassName,

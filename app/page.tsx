@@ -1,3 +1,5 @@
+"use client";
+
 import DotGrid from "@/components/DotGrid";
 import PillNav from "@/components/PillNav";
 import WhoWeAre from "@/components/WhoWeAre";
@@ -7,8 +9,23 @@ import Team from "@/components/Team";
 import MagicBento from "@/components/MagicBento";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
+import {
+  LanguageProvider,
+  LanguageSwitcher,
+  useLanguage,
+} from "@/components/LanguageProvider";
 
 export default function Home() {
+  return (
+    <LanguageProvider>
+      <HomeContent />
+    </LanguageProvider>
+  );
+}
+
+function HomeContent() {
+  const { t } = useLanguage();
+
   return (
     <main style={{ background: '#ffffff', position: 'relative' }}>
 
@@ -28,17 +45,19 @@ export default function Home() {
       </div>
 
       {/* Navbar */}
-      <div style={{ position: 'fixed', top: 24, left: 0, right: 0, zIndex: 10, display: 'flex', justifyContent: 'center' }}>
+      <LanguageSwitcher />
+      <div className="site-nav-shell">
         <PillNav
-          logo="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ctext x='50%25' y='55%25' font-size='22' font-weight='700' fill='white' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle'%3EVi%3C/text%3E%3C/svg%3E"
-          logoAlt="Vi"
+          logo=""
+          logoAlt="Viautomate"
           items={[
-            { label: 'Home', href: '/#home' },
-            { label: 'About', href: '/#aboutus' },
-            { label: 'Services', href: '/#services' },
-            { label: 'Contact', href: '/#contact' }
+            { label: t.nav.brand, href: '/#home', ariaLabel: t.nav.brandAria },
+            { label: t.nav.home, href: '/#home' },
+            { label: t.nav.about, href: '/#aboutus' },
+            { label: t.nav.services, href: '/#services' },
+            { label: t.nav.contact, href: '/#contact' }
           ]}
-          activeHref="/"
+          activeHref="/#home"
           baseColor="#1a1a1a"
           pillColor="#ffffff"
           pillTextColor="#000000"
@@ -65,17 +84,29 @@ export default function Home() {
             
           }
           .hero-label {
-            display: inline-block;
-            border: 1px solid #ddd;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(10, 10, 10, 0.16);
             border-radius: 999px;
-            padding: 6px 18px;
+            padding: 8px 18px;
             font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 3px;
+            font-weight: 700;
+            letter-spacing: 2.6px;
             text-transform: uppercase;
-            color: #ffffff;
-            background: rgb(0, 0, 0);
-
+            color: #0a0a0a;
+            background: rgba(255, 255, 255, 0.78);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+          }
+          .hero-label::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #0a0a0a;
+            box-shadow: 0 0 0 5px rgba(10, 10, 10, 0.08);
           }
           .hero-h1 {
             font-size: clamp(28px, 5.5vw, 68px);
@@ -86,10 +117,26 @@ export default function Home() {
             letter-spacing: -1px;
           }
           .hero-tagline {
+            position: relative;
             font-size: clamp(14px, 1.3vw, 17px);
-            color: #555;
-            max-width: 460px;
+            color: #2e2e2e;
+            max-width: 560px;
             line-height: 1.8;
+            margin: 0;
+            text-shadow:
+              0 1px 0 rgba(255, 255, 255, 0.95),
+              0 12px 34px rgba(0, 0, 0, 0.16);
+          }
+          .hero-tagline::before {
+            content: "";
+            position: absolute;
+            inset: -18px -34px;
+            z-index: -1;
+            border-radius: 999px;
+            background:
+              radial-gradient(ellipse at center, rgba(255, 255, 255, 0.86) 0%, rgba(255, 255, 255, 0.54) 42%, rgba(255, 255, 255, 0) 74%);
+            filter: blur(12px);
+            pointer-events: none;
           }
           .hero-cta {
             display: inline-block;
@@ -108,6 +155,7 @@ export default function Home() {
             .hero-label { font-size: 11px; letter-spacing: 2px; padding: 5px 16px; }
             .hero-h1 { font-size: clamp(32px, 9vw, 42px); line-height: 1.3; letter-spacing: -0.5px; max-width: 100%; }
             .hero-tagline { font-size: 15px; max-width: 100%; line-height: 1.75; }
+            .hero-tagline::before { inset: -16px -16px; }
             .hero-cta { padding: 13px 32px; font-size: 15px; }
           }
           @media (min-width: 431px) and (max-width: 768px) {
@@ -127,10 +175,10 @@ export default function Home() {
         `}</style>
 
         <div className="hero-wrapper">
-          <div className="hero-label">Automation Agency</div>
+          <div className="hero-label">{t.hero.label}</div>
 
           <h1 className="hero-h1">
-            We automate the boring stuff so you can{' '}
+            {t.hero.headingBeforeFocus}{' '}
             <span style={{ position: 'relative', display: 'inline-block', padding: '0 6px' }}>
               <svg
                 style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', overflow: 'visible', pointerEvents: 'none' }}
@@ -141,11 +189,11 @@ export default function Home() {
                   fill="none" stroke="#0a0a0a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                 />
               </svg>
-              focus
+              {t.hero.focus}
             </span>
-            {' '}on{' '}
+            {' '}{t.hero.headingAfterFocus}{' '}
             <span style={{ fontStyle: 'italic', fontWeight: 400, display: 'inline-block', position: 'relative', paddingBottom: '10px' }}>
-              what matters.
+              {t.hero.headingEmphasis}
               <svg
                 style={{ position: 'absolute', left: '-2px', bottom: '-2px', overflow: 'visible', pointerEvents: 'none' }}
                 width="104%" height="12px" viewBox="0 0 100 12" preserveAspectRatio="none"
@@ -157,10 +205,10 @@ export default function Home() {
           </h1>
 
           <p className="hero-tagline">
-            From spreadsheet chaos to voice agents and custom websites — we build systems that work for you, not the other way around.
+            {t.hero.tagline}
           </p>
 
-          <a href="/contact" className="hero-cta">Let's talk →</a>
+          <a href="/contact" className="hero-cta">{t.hero.cta}</a>
         </div>
       </div>
 
@@ -175,10 +223,10 @@ export default function Home() {
 <MarqueeSection />
 <div id="services" style={{ position: 'relative', zIndex: 1, padding: '80px 40px', maxWidth: '1200px', margin: '0 auto' }}>
         <p style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '3px', textTransform: 'uppercase', color: '#888', marginBottom: '16px', textAlign: 'center' }}>
-          What We Do
+          {t.services.eyebrow}
         </p>
         <h2 style={{ fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 700, color: '#0a0a0a', textAlign: 'center', marginBottom: '48px', letterSpacing: '-1px' }}>
-          We handle the tedious.<br />You handle the growth.
+          {t.services.titleLine1}<br />{t.services.titleLine2}
         </h2>
         <MagicBento
           textAutoHide={true}

@@ -1,50 +1,52 @@
+"use client";
+
+import { useLanguage } from "@/components/LanguageProvider";
 import "./ContactForm.css";
 
 const ContactForm = () => {
+  const { t } = useLanguage();
+
   return (
     <div className="contact-form">
       <div className="contact-form-row">
         <div className="contact-form-row-copy-item">
-          <p className="primary sm">Let's create together</p>
+          <p className="primary sm">{t.contact.topLine}</p>
         </div>
         <div className="contact-form-row-copy-item">
-          <p className="primary sm">Viautomate</p>
+          <p className="primary sm">{t.contact.brand}</p>
         </div>
         <div className="contact-form-row-copy-item">
-          <p className="primary sm">&copy; 2025</p>
+          <p className="primary sm">{t.contact.year}</p>
         </div>
       </div>
 
       <div className="contact-form-row">
         <div className="contact-form-col">
           <div className="contact-form-header">
-            <h3>Start a Conversation</h3>
-            <p>
-              Got a process that's eating your time? Let's talk about it.
-              We'll figure out exactly what to automate and build it for you.
-            </p>
+            <h3>{t.contact.heading}</h3>
+            <p>{t.contact.body}</p>
           </div>
           <div className="contact-form-availability">
-            <p className="primary sm">Available for new clients</p>
-            <p className="primary sm">Remote · Worldwide</p>
+            <p className="primary sm">{t.contact.available}</p>
+            <p className="primary sm">{t.contact.remote}</p>
           </div>
         </div>
 
         <div className="contact-form-col">
           <div className="form-item">
-            <input type="text" placeholder="Name" />
+            <input type="text" placeholder={t.contact.name} />
           </div>
           <div className="form-item">
-            <input type="email" placeholder="Email" />
+            <input type="email" placeholder={t.contact.email} />
           </div>
           <div className="form-item">
-            <input type="text" placeholder="Company (optional)" />
+            <input type="text" placeholder={t.contact.company} />
           </div>
           <div className="form-item">
-            <textarea rows={6} placeholder="Tell us what you need automated..." />
+            <textarea rows={6} placeholder={t.contact.message} />
           </div>
           <div className="form-item">
-            <button className="btn">Send Message</button>
+            <button className="btn">{t.contact.submit}</button>
           </div>
         </div>
       </div>

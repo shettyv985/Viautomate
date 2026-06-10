@@ -80,11 +80,15 @@
 }
 
 .about-us-col:nth-child(2) p {
-  width: 70%;
-  font-size: 16px;
-  line-height: 1.8;
-  color: #555;
+  width: min(76%, 760px);
+  font-size: clamp(16px, 1.2vw, 18px);
+  line-height: 1.9;
+  color: #2f2f2f;
   margin-bottom: 2em;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0 18px rgba(255, 255, 255, 0.82),
+    0 12px 32px rgba(0, 0, 0, 0.12);
 }
 
 .about-us-cta a {

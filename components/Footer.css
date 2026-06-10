@@ -1,11 +1,12 @@
 .footer {
   position: relative;
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   padding: 1rem;
   gap: 1rem;
   background: transparent;
+  box-sizing: border-box;
 }
 
 /* ── Meta block ── */
@@ -16,24 +17,28 @@
   border-radius: 2rem;
   padding: 4rem 3rem;
   color: #aaa;
+  box-sizing: border-box;
 }
 
 .footer .footer-meta .container.footer-meta-header {
   margin-bottom: 4rem;
   display: flex;
   align-items: flex-start;
+  justify-content: space-between;
   gap: 2rem;
 }
 
 .footer .footer-meta .container.footer-socials {
   display: flex;
   align-items: flex-end;
+  justify-content: space-between;
   gap: 2rem;
 }
 
 .footer .footer-meta .container.footer-meta-header .footer-meta-col,
 .footer .footer-meta .container.footer-socials .footer-meta-col {
   flex: 1;
+  min-width: 0;
 }
 
 /* Logo */
@@ -61,6 +66,7 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 0.4rem;
+  padding-right: 0;
 }
 
 .footer-nav-links a {
@@ -122,6 +128,7 @@
 .footer-outro {
   padding: 0 0.5rem 0.5rem 0.5rem;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .footer-outro .container {
@@ -132,12 +139,12 @@
 }
 
 .footer-big-text {
-  font-size: clamp(52px, 20vw, 215px);
+  font-size: clamp(50px, 14.6vw, 190px);
   font-weight: 700;
   color: #0a0a0a;
   line-height: 0.9;
   margin: 0;
-  padding: 0;
+  padding: 2px;
   font-family: "Aeonik Regular", sans-serif;
   white-space: nowrap;
   overflow: hidden;
@@ -145,7 +152,13 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  letter-spacing: normal;
+  gap: clamp(2px, 0.7vw, 16px);
+  letter-spacing: 0;
+}
+
+.footer-big-text span {
+  display: block;
+  flex: 0 1 auto;
 }
 
 .footer-copyright {
@@ -208,8 +221,8 @@
   }
 
   .footer-big-text {
-    letter-spacing: -2px;
-    font-size: clamp(40px, 12vw, 120px);
+    font-size: clamp(38px, 11.2vw, 104px);
+    gap: clamp(2px, 0.6vw, 10px);
   }
 
   .footer-copyright {
@@ -255,8 +268,8 @@
   }
 
   .footer-big-text {
-    font-size: clamp(36px, 15vw, 82px);
-    letter-spacing: -1px;
+    font-size: clamp(30px, 10.5vw, 66px);
+    gap: 2px;
   }
 
   .footer-outro {

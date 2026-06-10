@@ -11,7 +11,7 @@ export type PillNavItem = {
 };
 
 export interface PillNavProps {
-  logo: string;
+  logo?: string;
   logoAlt?: string;
   items: PillNavItem[];
   activeHref?: string;
@@ -227,6 +227,31 @@ const PillNav: React.FC<PillNavProps> = ({
     onMobileMenuClick?.();
   };
 
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+
+    const hamburger = hamburgerRef.current;
+    const menu = mobileMenuRef.current;
+
+    if (hamburger) {
+      const lines = hamburger.querySelectorAll('.hamburger-line');
+      gsap.to(lines[0], { rotation: 0, y: 0, duration: 0.2, ease });
+      gsap.to(lines[1], { rotation: 0, y: 0, duration: 0.2, ease });
+    }
+
+    if (menu) {
+      gsap.to(menu, {
+        opacity: 0,
+        y: 10,
+        duration: 0.2,
+        ease,
+        onComplete: () => {
+          gsap.set(menu, { visibility: 'hidden' });
+        }
+      });
+    }
+  };
+
   const isExternalLink = (href: string) =>
     href.startsWith('http://') ||
     href.startsWith('https://') ||
@@ -236,6 +261,9 @@ const PillNav: React.FC<PillNavProps> = ({
     href.startsWith('#');
 
   const isRouterLink = (href?: string) => href && !isExternalLink(href);
+  const hasLogo = Boolean(logo?.trim());
+  const isBrandItem = (item: PillNavItem) => item.label.toLowerCase().replace(/\s+/g, '') === 'viautomate';
+  const isActiveItem = (item: PillNavItem) => activeHref === item.href && !isBrandItem(item);
 
   const cssVars = {
     ['--base']: baseColor,
@@ -247,7 +275,7 @@ const PillNav: React.FC<PillNavProps> = ({
   return (
     <div className="pill-nav-container">
       <nav className={`pill-nav ${className}`} aria-label="Primary" style={cssVars}>
-        {isRouterLink(items?.[0]?.href) ? (
+        {hasLogo && isRouterLink(items?.[0]?.href) ? (
           <Link
   className="pill-logo"
   href={items[0].href}
@@ -258,9 +286,9 @@ const PillNav: React.FC<PillNavProps> = ({
               logoRef.current = el;
             }}
           >
-            <img src={logo} alt={logoAlt} ref={logoImgRef} />
+            <img src={logo ?? ''} alt={logoAlt} ref={logoImgRef} />
           </Link>
-        ) : (
+        ) : hasLogo ? (
           <a
             className="pill-logo"
             href={items?.[0]?.href || '#'}
@@ -270,19 +298,19 @@ const PillNav: React.FC<PillNavProps> = ({
               logoRef.current = el;
             }}
           >
-            <img src={logo} alt={logoAlt} ref={logoImgRef} />
+            <img src={logo ?? ''} alt={logoAlt} ref={logoImgRef} />
           </a>
-        )}
+        ) : null}
 
         <div className="pill-nav-items desktop-only" ref={navItemsRef}>
           <ul className="pill-list" role="menubar">
             {items.map((item, i) => (
-              <li key={item.href} role="none">
+              <li key={`${item.label}-${item.href}`} role="none">
                 {isRouterLink(item.href) ? (
                   <Link
   role="menuitem"
   href={item.href}
-  className={`pill${activeHref === item.href ? ' is-active' : ''}`}
+  className={`pill${isActiveItem(item) ? ' is-active' : ''}${isBrandItem(item) ? ' pill-brand' : ''}`}
                     aria-label={item.ariaLabel || item.label}
                     onMouseEnter={() => handleEnter(i)}
                     onMouseLeave={() => handleLeave(i)}
@@ -305,7 +333,7 @@ const PillNav: React.FC<PillNavProps> = ({
                   <a
                     role="menuitem"
                     href={item.href}
-                    className={`pill${activeHref === item.href ? ' is-active' : ''}`}
+                    className={`pill${isActiveItem(item) ? ' is-active' : ''}${isBrandItem(item) ? ' pill-brand' : ''}`}
                     aria-label={item.ariaLabel || item.label}
                     onMouseEnter={() => handleEnter(i)}
                     onMouseLeave={() => handleLeave(i)}
@@ -334,6 +362,7 @@ const PillNav: React.FC<PillNavProps> = ({
           className="mobile-menu-button mobile-only"
           onClick={toggleMobileMenu}
           aria-label="Toggle menu"
+          aria-expanded={isMobileMenuOpen}
           ref={hamburgerRef}
         >
           <span className="hamburger-line" />
@@ -344,20 +373,20 @@ const PillNav: React.FC<PillNavProps> = ({
       <div className="mobile-menu-popover mobile-only" ref={mobileMenuRef} style={cssVars}>
         <ul className="mobile-menu-list">
           {items.map(item => (
-            <li key={item.href}>
+            <li key={`${item.label}-${item.href}`}>
               {isRouterLink(item.href) ? (
 <Link
   href={item.href}
-  className={`mobile-menu-link${activeHref === item.href ? ' is-active' : ''}`}
-                  onClick={() => setIsMobileMenuOpen(false)}
+  className={`mobile-menu-link${isActiveItem(item) ? ' is-active' : ''}${isBrandItem(item) ? ' pill-brand' : ''}`}
+                  onClick={closeMobileMenu}
                 >
                   {item.label}
                 </Link>
               ) : (
                 <a
                   href={item.href}
-                  className={`mobile-menu-link${activeHref === item.href ? ' is-active' : ''}`}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`mobile-menu-link${isActiveItem(item) ? ' is-active' : ''}${isBrandItem(item) ? ' pill-brand' : ''}`}
+                  onClick={closeMobileMenu}
                 >
                   {item.label}
                 </a>

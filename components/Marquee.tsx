@@ -1,7 +1,11 @@
+"use client";
+
+import { useLanguage } from "@/components/LanguageProvider";
 import "./Marquee.css";
 
 const MarqueeSection = () => {
-  const items = ["Workflow Automation", "Voice Agents", "Web Development", "Spreadsheet Freedom", "Smart Systems"];
+  const { t } = useLanguage();
+  const items = t.marquee.items;
 
   return (
     <section className="marquee-section">

@@ -2,6 +2,7 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLanguage } from "@/components/LanguageProvider";
 import "./WhoWeAre.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -9,6 +10,8 @@ gsap.registerPlugin(ScrollTrigger);
 const placeholderImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect width='400' height='500' fill='%23333'/%3E%3C/svg%3E";
 
 const WhoWeAre = () => {
+  const { t } = useLanguage();
+
   useGSAP(() => {
     const whoweareScroll = document.querySelector(".whoweare-scroll") as HTMLElement;
     if (!whoweareScroll) return;
@@ -63,22 +66,22 @@ const WhoWeAre = () => {
       <div className="whoweare-container">
         <div className="whoweare-scroll">
           <div className="whoweare-header">
-            <h1>What We Do</h1>
+            <h1>{t.whoWeAre.title}</h1>
           </div>
           <div className="whoweare-img" id="whoweare-img-1">
-            <img src={placeholderImg} alt="Service" />
+            <img src={placeholderImg} alt={t.whoWeAre.serviceAlt} />
           </div>
           <div className="whoweare-img" id="whoweare-img-2">
-            <img src={placeholderImg} alt="Service" />
+            <img src={placeholderImg} alt={t.whoWeAre.serviceAlt} />
           </div>
           <div className="whoweare-img" id="whoweare-img-3">
-            <img src={placeholderImg} alt="Service" />
+            <img src={placeholderImg} alt={t.whoWeAre.serviceAlt} />
           </div>
           <div className="whoweare-img" id="whoweare-img-4">
-            <img src={placeholderImg} alt="Service" />
+            <img src={placeholderImg} alt={t.whoWeAre.serviceAlt} />
           </div>
           <div className="whoweare-img" id="whoweare-img-5">
-            <img src={placeholderImg} alt="Service" />
+            <img src={placeholderImg} alt={t.whoWeAre.serviceAlt} />
           </div>
         </div>
       </div>

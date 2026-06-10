@@ -1,4 +1,5 @@
 "use client";
+
 import "./Footer.css";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
@@ -6,11 +7,14 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import { RiLinkedinBoxLine, RiInstagramLine, RiTwitterXLine } from "react-icons/ri";
+import { useLanguage } from "@/components/LanguageProvider";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Footer = () => {
+  const { t } = useLanguage();
   const socialIconsRef = useRef<HTMLDivElement>(null);
+  const brandLetters = t.footer.bigText.split("");
 
   useGSAP(() => {
     if (!socialIconsRef.current) return;
@@ -37,17 +41,21 @@ const Footer = () => {
           <div className="footer-meta-col">
             <div className="footer-meta-block">
               <div className="footer-meta-logo">
-                <h3 className="lg">Viautomate</h3>
+                <h3 className="lg">{t.footer.brand}</h3>
               </div>
-              <h2>Stop doing boring work.<br />Let us automate it.</h2>
+              <h2>
+                {t.footer.headlineLine1}
+                <br />
+                {t.footer.headlineLine2}
+              </h2>
             </div>
           </div>
           <div className="footer-meta-col">
             <div className="footer-nav-links">
-              <Link href="/"><h3>Home</h3></Link>
-              <Link href="/about"><h3>About</h3></Link>
-              <Link href="/services"><h3>Services</h3></Link>
-              <Link href="/contact"><h3>Contact</h3></Link>
+              <Link href="/"><h3>{t.footer.home}</h3></Link>
+              <Link href="/about"><h3>{t.footer.about}</h3></Link>
+              <Link href="/services"><h3>{t.footer.services}</h3></Link>
+              <Link href="/contact"><h3>{t.footer.contact}</h3></Link>
             </div>
           </div>
         </div>
@@ -61,10 +69,7 @@ const Footer = () => {
             </div>
           </div>
           <div className="footer-meta-col">
-            <p>
-              We build automations, voice agents, and websites that free your
-              team from the tasks nobody wants to do.
-            </p>
+            <p>{t.footer.body}</p>
           </div>
         </div>
       </div>
@@ -72,11 +77,15 @@ const Footer = () => {
       <div className="footer-outro">
         <div className="container">
           <div className="footer-header">
-            <h1 className="footer-big-text">VIAUTOMATE</h1>
+            <h1 className="footer-big-text" aria-label={t.footer.bigText}>
+              {brandLetters.map((letter, index) => (
+                <span key={`${letter}-${index}`} aria-hidden="true">{letter}</span>
+              ))}
+            </h1>
           </div>
           <div className="footer-copyright">
-            <p>Built by — <span>Varun & Vishal Shetty</span></p>
-            <p>All rights reserved &copy; 2025</p>
+            <p>{t.footer.builtBy} - <span>{t.footer.builder}</span></p>
+            <p>{t.footer.rights}</p>
           </div>
         </div>
       </div>

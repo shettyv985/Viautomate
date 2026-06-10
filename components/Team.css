@@ -42,6 +42,16 @@
   flex: 1;
 }
 
+.player-copy-card {
+  padding: 1.1em 1.15em 1.2em;
+  border: 1px solid rgba(10, 10, 10, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
 .player-img {
   position: relative;
   width: 100%;
@@ -63,21 +73,21 @@
   font-size: 20px;
   font-weight: 700;
   color: #0a0a0a;
-  padding: 0.2em 0;
+  padding: 0 0 0.2em 0;
 }
 
 .player-info p {
   font-size: 13px;
-  color: #888;
+  color: #666;
   letter-spacing: 2px;
   text-transform: uppercase;
-  padding: 0.3em 0 0.8em 0;
+  padding: 0.3em 0 0.9em 0;
 }
 
 .player-desc p {
   font-size: 15px;
   line-height: 1.8;
-  color: #555;
+  color: #333;
   margin-bottom: 1.2em;
 }
 
