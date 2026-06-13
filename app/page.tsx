@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import DotGrid from "@/components/DotGrid";
 import PillNav from "@/components/PillNav";
 import WhoWeAre from "@/components/WhoWeAre";
@@ -9,6 +10,7 @@ import Team from "@/components/Team";
 import MagicBento from "@/components/MagicBento";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
+import { ArrowRight } from "lucide-react";
 import {
   LanguageProvider,
   LanguageSwitcher,
@@ -26,6 +28,15 @@ export default function Home() {
 function HomeContent() {
   const { language, t } = useLanguage();
   const isTranslatedHero = language !== "en";
+  const sharpieAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  const playSharpieSound = () => {
+    const audio = sharpieAudioRef.current;
+    if (!audio) return;
+
+    audio.currentTime = 0;
+    void audio.play().catch(() => {});
+  };
 
   return (
     <main style={{ background: '#ffffff', position: 'relative' }}>
@@ -132,6 +143,48 @@ function HomeContent() {
           .hero-heading-tail-mobile-prefix::after {
             content: " ";
           }
+          .hero-focus-draw-target {
+            position: relative;
+            display: inline-block;
+            padding: 0 6px;
+            white-space: nowrap;
+            cursor: default;
+          }
+          .hero-focus-draw-target svg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 115%;
+            height: 190%;
+            transform: translate(-50%, -50%);
+            overflow: visible;
+            pointer-events: none;
+          }
+          .hero-focus-draw-target path {
+            opacity: 0;
+            stroke-dasharray: 1;
+            stroke-dashoffset: 1;
+          }
+          .hero-focus-draw-target:hover path,
+          .hero-focus-draw-target:focus-visible path {
+            animation: hero-sharpie-circle-draw 720ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          }
+          .hero-focus-draw-target:focus-visible {
+            outline: none;
+          }
+          @keyframes hero-sharpie-circle-draw {
+            0% {
+              opacity: 0;
+              stroke-dashoffset: 1;
+            }
+            8% {
+              opacity: 1;
+            }
+            100% {
+              opacity: 1;
+              stroke-dashoffset: 0;
+            }
+          }
           .hero-h1-localized {
             font-size: clamp(26px, 3.45vw, 44px);
             line-height: 1.2;
@@ -160,16 +213,97 @@ function HomeContent() {
             pointer-events: none;
           }
           .hero-cta {
-            display: inline-block;
+            position: relative;
+            isolation: isolate;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 50px;
+            overflow: hidden;
             background: #0a0a0a;
             color: #fff;
-            padding: 14px 36px;
+            padding: 14px 28px;
+            border: 1px solid #0a0a0a;
             border-radius: 999px;
-            font-weight: 600;
+            font-family: "Aeonik Regular", sans-serif;
+            font-weight: 400;
             font-size: 15px;
+            line-height: 1;
             text-decoration: none;
-            letter-spacing: 0.3px;
+            letter-spacing: 0;
             margin-top: 4px;
+            box-shadow:
+              0 14px 30px rgba(0, 0, 0, 0.16);
+            transition:
+              color 320ms ease 90ms,
+              box-shadow 260ms ease;
+          }
+          .hero-cta::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background: #ffffff;
+            border-radius: inherit;
+            pointer-events: none;
+            transform: translateX(-101%);
+            transition: transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+          }
+          .hero-cta-label,
+          .hero-cta-icon {
+            position: relative;
+            z-index: 1;
+          }
+          .hero-cta-label {
+            display: block;
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: inherit;
+            line-height: 1;
+            white-space: nowrap;
+          }
+          .hero-cta-icon {
+            display: block;
+            width: 16px;
+            height: 16px;
+            flex: 0 0 auto;
+            color: currentColor;
+            transition: transform 340ms cubic-bezier(0.16, 1, 0.3, 1);
+          }
+          .hero-cta:hover {
+            color: #0a0a0a;
+            box-shadow:
+              0 16px 34px rgba(0, 0, 0, 0.18);
+          }
+          .hero-cta:hover::before {
+            transform: translateX(0);
+          }
+          .hero-cta:hover .hero-cta-icon {
+            transform: translateX(2px);
+          }
+          .hero-cta:active {
+            transform: scale(0.98);
+          }
+          .hero-cta:focus-visible {
+            outline: 2px solid #0a0a0a;
+            outline-offset: 4px;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .hero-cta,
+            .hero-cta-label,
+            .hero-cta-icon {
+              transition: none;
+            }
+            .hero-cta::before {
+              transition: none;
+            }
+            .hero-focus-draw-target:hover path,
+            .hero-focus-draw-target:focus-visible path {
+              animation: none;
+              opacity: 1;
+              stroke-dashoffset: 0;
+            }
           }
           @media (max-width: 430px) {
             .hero-wrapper { gap: 16px; margin-top: 70px; padding: 0 20px; }
@@ -181,7 +315,11 @@ function HomeContent() {
             .hero-heading-tail-mobile-prefix { display: inline; }
             .hero-tagline { font-size: 15px; max-width: 100%; line-height: 1.75; }
             .hero-tagline::before { inset: -16px -16px; }
-            .hero-cta { padding: 13px 32px; font-size: 15px; }
+            .hero-cta { max-width: calc(100vw - 40px); min-height: 48px; padding: 13px 22px; font-size: 14px; gap: 8px; }
+          }
+          @media (max-width: 360px) {
+            .hero-cta { padding: 12px 18px; font-size: clamp(12px, 3.7vw, 13px); gap: 6px; }
+            .hero-cta-icon { width: 14px; height: 14px; }
           }
           @media (min-width: 431px) and (max-width: 768px) {
             .hero-wrapper { gap: 16px; margin-top: 65px; }
@@ -212,14 +350,18 @@ function HomeContent() {
             <span className="hero-heading-line hero-heading-nowrap">{t.hero.headingLead}</span>
             <span className="hero-heading-line">
               {t.hero.headingBeforeFocus}{' '}
-              <span style={{ position: 'relative', display: 'inline-block', padding: '0 6px', whiteSpace: 'nowrap' }}>
+              <span
+                className="hero-focus-draw-target"
+                tabIndex={0}
+                onPointerEnter={playSharpieSound}
+                onFocus={playSharpieSound}
+              >
                 <svg
-                  style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', overflow: 'visible', pointerEvents: 'none' }}
                   width="115%" height="190%" viewBox="0 0 110 58" preserveAspectRatio="none"
                 >
                   <path
                     d="M 55 4 C 80 2, 104 14, 106 30 C 108 44, 82 54, 55 54 C 28 54, 4 44, 4 30 C 4 14, 30 6, 55 4 Z"
-                    fill="none" stroke="#0a0a0a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                    fill="none" stroke="#0a0a0a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" pathLength="1"
                   />
                 </svg>
                 {t.hero.focus}
@@ -255,7 +397,11 @@ function HomeContent() {
             {t.hero.tagline}
           </p>
 
-          <a href="/contact" className="hero-cta">{t.hero.cta}</a>
+          <a href="/#contact" className="hero-cta">
+            <span className="hero-cta-label">{t.hero.cta}</span>
+            <ArrowRight className="hero-cta-icon" aria-hidden="true" strokeWidth={2.6} />
+          </a>
+          <audio ref={sharpieAudioRef} src="/sharpie.mp3" preload="auto" />
         </div>
       </div>
 
@@ -266,7 +412,6 @@ function HomeContent() {
       <div id="aboutus"><AboutUs /></div>
       
 
-<Team />
 <MarqueeSection />
 <div id="services" style={{ position: 'relative', zIndex: 1, padding: '80px 40px', maxWidth: '1200px', margin: '0 auto' }}>
         <p style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '3px', textTransform: 'uppercase', color: '#888', marginBottom: '16px', textAlign: 'center' }}>
@@ -289,6 +434,7 @@ function HomeContent() {
           disableAnimations={false}
         />
       </div>
+<Team />
             <div id="contact" style={{ position: 'relative', zIndex: 1, paddingBottom: '60px' }}>
         <ContactForm />
       </div>
